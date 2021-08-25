@@ -27,15 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: |
-          sed -i '5i\  "homepage": "/pages-demo-react",' ./package.json
       - run: npm ci
-      - run: npm run build
-      - run: cp build/index.html build/404.html
+      - run: npm run build --base-href /pages-demo-angular/
+      - run: cp dist/index.html dist/404.html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./dist
